@@ -446,8 +446,9 @@
   .cta-banner p{font-size:16px; color:rgba(234,249,252,.85); margin-bottom:34px;}
 
   /* CONTACT */
-  .contact-grid{display:grid; grid-template-columns:.85fr 1fr; gap:80px;}
-  .contact-info h2{font-size:clamp(26px,3vw,38px); margin-bottom:26px; max-width:420px; color:var(--paper);}
+  .contact-grid{display:grid; grid-template-columns:1fr; justify-items:center; text-align:center; gap:80px;}
+  .contact-info{display:flex; flex-direction:column; align-items:center;}
+  .contact-info h2{font-size:clamp(26px,3vw,38px); margin:0 auto 26px; max-width:420px; color:var(--paper);}
   .info-list{list-style:none; margin:0 0 26px; padding:0; display:flex; flex-direction:column; gap:12px;}
   .info-list li{font-size:15px; color:var(--paper-soft);}
   .info-list li strong{color:var(--paper);}
@@ -1031,13 +1032,6 @@
           <a href="https://www.immobiliare.it/agenzie-immobiliari/443071/mediacasa-sas-padova/" target="_blank" rel="noopener" aria-label="Immobiliare.it" data-tip="Immobiliare.it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10.5 12 4l9 6.5"/><path d="M5 9.5V20h14V9.5"/><path d="M10 20v-6h4v6"/></svg></a>
         </div>
       </div>
-      <form class="contact-form" data-reveal onsubmit="return false;">
-        <label>Nome e cognome<input type="text" placeholder="Mario Rossi" required></label>
-        <label>Email<input type="email" placeholder="mario.rossi@email.com" required></label>
-        <label>Messaggio<textarea rows="4" placeholder="Vorrei una valutazione per il mio immobile in..." required></textarea></label>
-        <button class="btn btn-primary" type="submit">Invia richiesta</button>
-        <p class="form-note">Modulo dimostrativo — in produzione verrà collegato a email o CRM dell'agenzia.</p>
-      </form>
     </div>
   </section>
 
