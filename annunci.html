@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Annunci — MediaCasa Immobiliare</title>
+<meta name="description" content="Ville, appartamenti e immobili di prestigio a Padova e dintorni. Sfoglia gli annunci di MediaCasa Immobiliare.">
+<style>
+  :root{
+    --ground:#F7F5F0; --panel:#FBFAF7; --panel-2:#EFEAE1;
+    --paper:#241811; --paper-soft:rgba(36,24,17,.72); --paper-mute:rgba(36,24,17,.5);
+    --line:rgba(36,24,17,0.15); --bordeaux:#241811; --bordeaux-deep:#140D08;
+    --bordeaux-tint:rgba(36,24,17,0.1); --on-accent:#F7F5F0;
+    --radius-l:22px; --radius-m:12px;
+    --serif:'Iowan Old Style','Palatino Linotype','URW Palladio L',Palatino,Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --ease-snap:cubic-bezier(.2,0,0,1);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--ground); color:var(--paper); font-family:var(--sans); -webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:var(--serif); font-weight:500; margin:0; text-wrap:balance;}
+  p{margin:0; text-wrap:pretty;}
+  a{color:inherit;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 22px;}
+
+  .topbar{background:var(--bordeaux); color:var(--on-accent); position:sticky; top:0; z-index:10;}
+  .topbar .wrap{display:flex; align-items:center; justify-content:space-between; height:64px;}
+  .brand{font-family:var(--serif); font-size:19px; letter-spacing:.02em;}
+  .back-link{display:inline-flex; align-items:center; gap:8px; font-size:14px; font-weight:600; text-decoration:none; color:var(--on-accent); opacity:.85; transition:opacity .2s;}
+  .back-link:hover{opacity:1;}
+
+  .hero{padding:56px 0 6px;}
+  .eyebrow{font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--bordeaux); font-weight:600; margin-bottom:14px; display:block;}
+  .hero h1{font-size:clamp(30px,5vw,48px); line-height:1.05;}
+  .hero p{margin-top:16px; color:var(--paper-soft); font-size:16.5px; max-width:60ch;}
+
+  .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:26px; margin:40px 0 30px;}
+  @media (max-width:900px){ .grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:620px){ .grid{grid-template-columns:1fr;} }
+
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius-l); overflow:hidden; display:flex; flex-direction:column; transition:transform .3s var(--ease-snap), box-shadow .3s var(--ease-snap);}
+  .card:hover{transform:translateY(-6px); box-shadow:0 30px 60px -34px rgba(36,24,17,.5);}
+
+  .card-media{position:relative; aspect-ratio:4/3; background:
+      repeating-linear-gradient(45deg, var(--panel-2) 0 12px, #E7E1D6 12px 24px);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; color:var(--paper-mute);}
+  .card-media svg{width:26px; height:26px; opacity:.6;}
+  .card-media span{font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; font-weight:600;}
+  .price-badge{position:absolute; top:14px; left:14px; background:var(--bordeaux); color:var(--on-accent); font-size:13px; font-weight:600; padding:7px 13px; border-radius:999px; letter-spacing:.01em;}
+  .price-badge.reserved{background:var(--panel); color:var(--bordeaux); border:1px solid var(--line);}
+
+  .card-body{padding:24px; display:flex; flex-direction:column; gap:10px; flex:1;}
+  .card-loc{font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--bordeaux); font-weight:600;}
+  .card h3{font-size:21px; line-height:1.15;}
+  .card p{color:var(--paper-soft); font-size:14.5px; line-height:1.55;}
+  .card-foot{margin-top:auto; padding-top:14px; border-top:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:12px;}
+  .card-note{font-size:12px; color:var(--paper-mute);}
+  .card-link{font-size:13.5px; font-weight:600; text-decoration:none; color:var(--bordeaux); border-bottom:1px solid var(--line); transition:border-color .2s;}
+  .card-link:hover{border-color:var(--bordeaux);}
+
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; font-family:var(--sans); font-size:14.5px; font-weight:600; padding:16px 28px; border-radius:999px; text-decoration:none; cursor:pointer; border:1px solid transparent; transition:transform .2s var(--ease-snap), background-color .2s var(--ease-snap), box-shadow .2s var(--ease-snap);}
+  .btn:active{transform:scale(.97);}
+  .btn-primary{background:var(--bordeaux); color:var(--on-accent); box-shadow:0 10px 26px -10px rgba(36,24,17,.5);}
+  .btn-primary:hover{background:var(--bordeaux-deep); transform:translateY(-2px);}
+
+  .outro{text-align:center; padding:20px 0 72px;}
+  .outro p{color:var(--paper-soft); font-size:16px; margin-bottom:22px;}
+  .disclaimer{text-align:center; font-size:12.5px; color:var(--paper-mute); padding-bottom:48px;}
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <span class="brand">MediaCasa</span>
+      <a class="back-link" href="index.html">← Torna al sito</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <span class="eyebrow">Annunci</span>
+      <h1>Una selezione dal nostro portfolio.</h1>
+      <p>Ville, appartamenti e immobili di prestigio a Padova e dintorni. Foto complete e planimetrie sono disponibili in agenzia: contattaci per una visita o maggiori informazioni.</p>
+    </section>
+
+    <section class="grid">
+
+      <article class="card">
+        <div class="card-media">
+          <span class="price-badge reserved">Su richiesta</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          <span>Foto e planimetrie in agenzia</span>
+        </div>
+        <div class="card-body">
+          <span class="card-loc">Padova · Centro</span>
+          <h3>Nuovi appartamenti di lusso — URBAN</h3>
+          <p>URBAN è la nuova residenza di lusso nel cuore di Padova: appartamenti esclusivi con terrazze o giardini privati. Eleganza, comfort e tecnologia.</p>
+          <div class="card-foot">
+            <span class="card-note">Nuova costruzione</span>
+            <a class="card-link" href="https://www.immobiliare.it/agenzie-immobiliari/443071/mediacasa-sas-padova/" target="_blank" rel="noopener">Su immobiliare.it →</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media">
+          <span class="price-badge reserved">Trattativa riservata</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          <span>Foto e planimetrie in agenzia</span>
+        </div>
+        <div class="card-body">
+          <span class="card-loc">Padova</span>
+          <h3>Villa Liberty con dependance</h3>
+          <p>Villa Liberty del 1923 immersa nel verde, restaurata con eleganza e cura dei dettagli. Ampi spazi su tre livelli, due unità abitative e grande giardino privato. Fascino storico e posizione prestigiosa.</p>
+          <div class="card-foot">
+            <span class="card-note">Villa d'epoca · 3 livelli</span>
+            <a class="card-link" href="https://www.immobiliare.it/agenzie-immobiliari/443071/mediacasa-sas-padova/" target="_blank" rel="noopener">Su immobiliare.it →</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media">
+          <span class="price-badge">€ 539.000</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          <span>Foto e planimetrie in agenzia</span>
+        </div>
+        <div class="card-body">
+          <span class="card-loc">Padova · Vicinanze centro</span>
+          <h3>Villa singola con giardino</h3>
+          <p>Casa indipendente con possibilità di dividerla in due appartamenti, spazi accessori e giardino di 400 mq. Ideale per soluzione genitori/figli o come investimento.</p>
+          <div class="card-foot">
+            <span class="card-note">Giardino 400 mq</span>
+            <a class="card-link" href="https://www.immobiliare.it/agenzie-immobiliari/443071/mediacasa-sas-padova/" target="_blank" rel="noopener">Su immobiliare.it →</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media">
+          <span class="price-badge">€ 780.000</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          <span>Foto e planimetrie in agenzia</span>
+        </div>
+        <div class="card-body">
+          <span class="card-loc">Padova</span>
+          <h3>Villa singola con giardino</h3>
+          <p>Prestigiosa villa anni '50 parzialmente ristrutturata di 560 mq su tre livelli. Serra, garage, terrazza e giardino. Ampi spazi, due unità abitative e posizione strategica.</p>
+          <div class="card-foot">
+            <span class="card-note">560 mq · 3 livelli</span>
+            <a class="card-link" href="https://www.immobiliare.it/agenzie-immobiliari/443071/mediacasa-sas-padova/" target="_blank" rel="noopener">Su immobiliare.it →</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media">
+          <span class="price-badge reserved">Trattativa riservata</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          <span>Foto e planimetrie in agenzia</span>
+        </div>
+        <div class="card-body">
+          <span class="card-loc">Padova · ZTL</span>
+          <h3>Locale commerciale di prestigio</h3>
+          <p>Prestigioso negozio plurivetrinato in zona ZTL, fronte piazzetta. Luminoso open-space con ufficio, bagno, doppio accesso e canna fumaria ripristinabile. Basse spese.</p>
+          <div class="card-foot">
+            <span class="card-note">Commerciale</span>
+            <a class="card-link" href="https://www.immobiliare.it/agenzie-immobiliari/443071/mediacasa-sas-padova/" target="_blank" rel="noopener">Su immobiliare.it →</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media">
+          <span class="price-badge">€ 340.000</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          <span>Foto e planimetrie in agenzia</span>
+        </div>
+        <div class="card-body">
+          <span class="card-loc">Padova · Via Zabarella</span>
+          <h3>Appartamento con giardino esclusivo</h3>
+          <p>Appartamento centralissimo in Via Zabarella, 50 mq con giardino e terrazza. Soggiorno con angolo cottura, due camere e bagno. Luminoso, ristrutturato e arredato con gusto.</p>
+          <div class="card-foot">
+            <span class="card-note">50 mq · 2 camere</span>
+            <a class="card-link" href="https://www.immobiliare.it/agenzie-immobiliari/443071/mediacasa-sas-padova/" target="_blank" rel="noopener">Su immobiliare.it →</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media">
+          <span class="price-badge">€ 320.000</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          <span>Foto e planimetrie in agenzia</span>
+        </div>
+        <div class="card-body">
+          <span class="card-loc">Vigonza</span>
+          <h3>Appartamento nuovo con terrazzo</h3>
+          <p>Attico di nuova costruzione in posizione centrale, secondo e ultimo piano. Terrazzo di 45 mq con pompeiana, riscaldamento a pavimento, domotica, raffreddamento canalizzato, garage doppio e due posti auto.</p>
+          <div class="card-foot">
+            <span class="card-note">Attico · nuova costruzione</span>
+            <a class="card-link" href="https://www.immobiliare.it/agenzie-immobiliari/443071/mediacasa-sas-padova/" target="_blank" rel="noopener">Su immobiliare.it →</a>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <div class="outro">
+      <p>Non hai trovato quello che cerchi? Contattaci: troviamo l'immobile giusto per te.</p>
+      <a class="btn btn-primary" href="index.html#contatti">Contattaci</a>
+    </div>
+
+    <p class="disclaimer">Concept di redesign — non il sito in produzione. Prezzi e disponibilità indicativi, soggetti a verifica in agenzia.</p>
+  </main>
+</body>
+</html>
