@@ -1177,6 +1177,12 @@
       video.loop = true;
       var playMobile = function(){ var p = video.play(); if (p && p.catch) p.catch(function(){}); };
       playMobile();
+      // iOS in Risparmio energetico blocca l'autoplay: il play e' pero' consentito
+      // durante un gesto dell'utente. Avvia il video al primo tocco/scroll.
+      var startOnGesture = function(){ playMobile(); };
+      window.addEventListener('touchstart', startOnGesture, {once:true, passive:true});
+      window.addEventListener('scroll', startOnGesture, {once:true, passive:true});
+      window.addEventListener('pointerdown', startOnGesture, {once:true});
       document.addEventListener('visibilitychange', function(){ if (!document.hidden) playMobile(); });
       return;
     }
