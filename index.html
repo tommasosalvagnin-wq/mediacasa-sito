@@ -560,6 +560,10 @@
   @media (max-width: 640px){
     section{padding:76px 0;}
     .wrap{padding:0 22px;}
+    /* Hero come sfondo video normale su mobile: altezza stabile (svh) per non far
+       "impazzire" lo scroll quando la barra URL appare/scompare. */
+    .hero{height:100svh;}
+    .hero-sticky{position:relative; height:100svh;}
     .hero-content{padding:120px 22px 64px;}
     .hero-actions{flex-direction:column; align-items:stretch; gap:14px;}
     .hero-actions .btn-text{align-self:flex-start;}
@@ -1161,23 +1165,21 @@
     const hero = document.querySelector('.hero');
     const video = document.getElementById('heroVideo');
     if (!hero || !video) return;
-    // Su mobile usa una versione piu' leggera del video (720p, bitrate ridotto): il
-    // seek e' molto piu' veloce, quindi lo scrub dello scroll resta fluido.
+    // Su mobile lo scroll-scrubbing del video causa bug seri: scroll instabile per il
+    // ricalcolo di 100dvh quando la barra URL appare/scompare, e frame vuoti/bianchi
+    // su iOS (il seek non disegna i fotogrammi). Percio' su mobile il video diventa un
+    // semplice sfondo autoplay+loop (versione leggera), con il poster come fallback se
+    // l'autoplay e' bloccato (es. Risparmio energetico). Lo scrub resta solo su desktop.
     var isMobile = matchMedia('(max-width: 640px)').matches || matchMedia('(pointer: coarse)').matches;
     if (isMobile) {
       var mSrc = video.querySelector('source');
       if (mSrc) { mSrc.src = 'glass_hero_scroll_mobile.mp4'; video.load(); }
+      video.loop = true;
+      var playMobile = function(){ var p = video.play(); if (p && p.catch) p.catch(function(){}); };
+      playMobile();
+      document.addEventListener('visibilitychange', function(){ if (!document.hidden) playMobile(); });
+      return;
     }
-    // iOS: un video solo "seekato" (scrub) non disegna i frame finche' non viene
-    // riprodotto almeno una volta. Lo innesca al primo tocco: play immediato + pause,
-    // cosi' i seek successivi mostrano i fotogrammi invece di restare vuoti.
-    var primed = false;
-    var prime = function(){ if (primed) return; primed = true;
-      var p = video.play();
-      if (p && p.then) p.then(function(){ setTimeout(function(){ try{ video.pause(); }catch(e){} }, 60); }).catch(function(){});
-    };
-    window.addEventListener('touchstart', prime, {once:true, passive:true});
-    window.addEventListener('pointerdown', prime, {once:true});
     const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     let duration = 0;
