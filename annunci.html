@@ -41,12 +41,27 @@
   .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius-l); overflow:hidden; display:flex; flex-direction:column; transition:transform .3s var(--ease-snap), box-shadow .3s var(--ease-snap);}
   .card:hover{transform:translateY(-6px); box-shadow:0 30px 60px -34px rgba(36,24,17,.5);}
 
-  .card-media{position:relative; aspect-ratio:4/3; background:
-      repeating-linear-gradient(45deg, var(--panel-2) 0 12px, #E7E1D6 12px 24px);
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; color:var(--paper-mute);}
-  .card-media svg{width:26px; height:26px; opacity:.6;}
-  .card-media span{font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; font-weight:600;}
+  .card-media{position:relative; aspect-ratio:4/3; overflow:hidden;
+    background:
+      radial-gradient(120% 100% at 50% 0%, #FBFAF7 0%, #F1ECE3 55%, #E7E0D4 100%);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; color:var(--paper-soft);}
+  /* faint oversized monogram watermark */
+  .card-media::before{content:'M'; position:absolute; right:-14px; bottom:-38px;
+    font-family:var(--serif); font-size:190px; line-height:1; color:var(--paper);
+    opacity:.05; pointer-events:none;}
+  /* subtle top sheen */
+  .card-media::after{content:''; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(255,255,255,.5), rgba(255,255,255,0) 40%);
+    pointer-events:none;}
+  .media-emblem{position:relative; z-index:1; width:58px; height:58px; border-radius:999px;
+    background:var(--panel); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 26px -14px rgba(36,24,17,.45);}
+  .media-emblem svg{width:24px; height:24px; color:var(--bordeaux); opacity:.85;}
+  .media-cap{position:relative; z-index:1; text-align:center; font-size:11px; letter-spacing:.16em;
+    text-transform:uppercase; font-weight:600; color:var(--paper-mute); line-height:1.7;}
   .card-media.has-photo{background:none;}
+  .card-media.has-photo::before, .card-media.has-photo::after{display:none;}
   .card-media.has-photo img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;}
   .card:hover .card-media.has-photo img{transform:scale(1.04);}
   .card-media.has-photo img{transition:transform .5s var(--ease-snap);}
@@ -124,8 +139,10 @@
       <article class="card">
         <div class="card-media">
           <span class="price-badge">€ 539.000</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-          <span>Foto e planimetrie in agenzia</span>
+          <div class="media-emblem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3 8.5 12 3l9 5.5"/><path d="M5 10.5V20h14v-9.5"/><circle cx="12" cy="14" r="2.4"/></svg>
+          </div>
+          <span class="media-cap">Foto e planimetrie<br>disponibili in agenzia</span>
         </div>
         <div class="card-body">
           <span class="card-loc">Padova · Vicinanze centro</span>
@@ -157,8 +174,10 @@
       <article class="card">
         <div class="card-media">
           <span class="price-badge reserved">Trattativa riservata</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-          <span>Foto e planimetrie in agenzia</span>
+          <div class="media-emblem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3 8.5 12 3l9 5.5"/><path d="M5 10.5V20h14v-9.5"/><circle cx="12" cy="14" r="2.4"/></svg>
+          </div>
+          <span class="media-cap">Foto e planimetrie<br>disponibili in agenzia</span>
         </div>
         <div class="card-body">
           <span class="card-loc">Padova · ZTL</span>
@@ -174,8 +193,10 @@
       <article class="card">
         <div class="card-media">
           <span class="price-badge">€ 340.000</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-          <span>Foto e planimetrie in agenzia</span>
+          <div class="media-emblem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3 8.5 12 3l9 5.5"/><path d="M5 10.5V20h14v-9.5"/><circle cx="12" cy="14" r="2.4"/></svg>
+          </div>
+          <span class="media-cap">Foto e planimetrie<br>disponibili in agenzia</span>
         </div>
         <div class="card-body">
           <span class="card-loc">Padova · Via Zabarella</span>
@@ -191,8 +212,10 @@
       <article class="card">
         <div class="card-media">
           <span class="price-badge">€ 320.000</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-          <span>Foto e planimetrie in agenzia</span>
+          <div class="media-emblem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3 8.5 12 3l9 5.5"/><path d="M5 10.5V20h14v-9.5"/><circle cx="12" cy="14" r="2.4"/></svg>
+          </div>
+          <span class="media-cap">Foto e planimetrie<br>disponibili in agenzia</span>
         </div>
         <div class="card-body">
           <span class="card-loc">Vigonza</span>
