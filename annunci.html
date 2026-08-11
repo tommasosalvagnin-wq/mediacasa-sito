@@ -46,6 +46,10 @@
     display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; color:var(--paper-mute);}
   .card-media svg{width:26px; height:26px; opacity:.6;}
   .card-media span{font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; font-weight:600;}
+  .card-media.has-photo{background:none;}
+  .card-media.has-photo img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;}
+  .card:hover .card-media.has-photo img{transform:scale(1.04);}
+  .card-media.has-photo img{transition:transform .5s var(--ease-snap);}
   .price-badge{position:absolute; top:14px; left:14px; background:var(--bordeaux); color:var(--on-accent); font-size:13px; font-weight:600; padding:7px 13px; border-radius:999px; letter-spacing:.01em;}
   .price-badge.reserved{background:var(--panel); color:var(--bordeaux); border:1px solid var(--line);}
 
@@ -86,10 +90,9 @@
     <section class="grid">
 
       <article class="card">
-        <div class="card-media">
+        <div class="card-media has-photo">
           <span class="price-badge reserved">Su richiesta</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-          <span>Foto e planimetrie in agenzia</span>
+          <img src="assets/annunci/urban.jpg" alt="Nuovi appartamenti di lusso URBAN, Padova centro" loading="lazy">
         </div>
         <div class="card-body">
           <span class="card-loc">Padova · Centro</span>
@@ -103,10 +106,9 @@
       </article>
 
       <article class="card">
-        <div class="card-media">
+        <div class="card-media has-photo">
           <span class="price-badge reserved">Trattativa riservata</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-          <span>Foto e planimetrie in agenzia</span>
+          <img src="assets/annunci/liberty.jpg" alt="Villa Liberty del 1923 con dependance, Padova" loading="lazy">
         </div>
         <div class="card-body">
           <span class="card-loc">Padova</span>
@@ -137,10 +139,9 @@
       </article>
 
       <article class="card">
-        <div class="card-media">
+        <div class="card-media has-photo">
           <span class="price-badge">€ 780.000</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-          <span>Foto e planimetrie in agenzia</span>
+          <img src="assets/annunci/villa-anni50.jpg" alt="Prestigiosa villa anni '50 di 560 mq, Padova" loading="lazy">
         </div>
         <div class="card-body">
           <span class="card-loc">Padova</span>
