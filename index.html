@@ -560,10 +560,11 @@
   @media (max-width: 640px){
     section{padding:76px 0;}
     .wrap{padding:0 22px;}
-    /* Hero come sfondo video normale su mobile: altezza stabile (svh) per non far
-       "impazzire" lo scroll quando la barra URL appare/scompare. */
+    /* Hero come IMMAGINE fissa su mobile: niente video (evita autoplay bloccato,
+       frame vuoti e sfarfallio). Altezza stabile (svh) per uno scroll regolare. */
     .hero{height:100svh;}
     .hero-sticky{position:relative; height:100svh;}
+    .hero-bg{display:none;}
     .hero-content{padding:120px 22px 64px;}
     .hero-actions{flex-direction:column; align-items:stretch; gap:14px;}
     .hero-actions .btn-text{align-self:flex-start;}
@@ -1172,18 +1173,13 @@
     // l'autoplay e' bloccato (es. Risparmio energetico). Lo scrub resta solo su desktop.
     var isMobile = matchMedia('(max-width: 640px)').matches || matchMedia('(pointer: coarse)').matches;
     if (isMobile) {
+      // Su mobile il video da' solo problemi (autoplay bloccato in Risparmio energetico,
+      // frame vuoti su iOS, sfarfallio). Soluzione definitiva: hero come IMMAGINE fissa
+      // (il poster e' gia' sfondo di .hero-bg-wrap; il video e' nascosto via CSS).
+      // Qui liberiamo il download del video per non sprecare dati.
       var mSrc = video.querySelector('source');
-      if (mSrc) { mSrc.src = 'glass_hero_scroll_mobile.mp4'; video.load(); }
-      video.loop = true;
-      var playMobile = function(){ var p = video.play(); if (p && p.catch) p.catch(function(){}); };
-      playMobile();
-      // iOS in Risparmio energetico blocca l'autoplay: il play e' pero' consentito
-      // durante un gesto dell'utente. Avvia il video al primo tocco/scroll.
-      var startOnGesture = function(){ playMobile(); };
-      window.addEventListener('touchstart', startOnGesture, {once:true, passive:true});
-      window.addEventListener('scroll', startOnGesture, {once:true, passive:true});
-      window.addEventListener('pointerdown', startOnGesture, {once:true});
-      document.addEventListener('visibilitychange', function(){ if (!document.hidden) playMobile(); });
+      if (mSrc) { mSrc.removeAttribute('src'); }
+      try { video.removeAttribute('src'); video.load(); } catch (e) {}
       return;
     }
     const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
