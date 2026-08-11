@@ -556,6 +556,9 @@
   @media (max-width: 640px){
     section{padding:76px 0;}
     .wrap{padding:0 22px;}
+    /* Hero come sfondo video normale su mobile (niente scroll-scrubbing) */
+    .hero{height:100dvh;}
+    .hero-sticky{position:relative;}
     .hero-content{padding:120px 22px 64px;}
     .hero-actions{flex-direction:column; align-items:stretch; gap:14px;}
     .hero-actions .btn-text{align-self:flex-start;}
@@ -641,6 +644,17 @@
     .listing:hover .listing-media img{ transform:none; }
   }
 </style>
+
+<script>
+  // Apre sempre in cima: evita che il browser (soprattutto mobile) ripristini
+  // una posizione di scroll precedente e "salti" in fondo alla pagina.
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.addEventListener('load', function(){
+    window.scrollTo(0, 0);
+    if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  });
+</script>
 
 <div class="grain"></div>
 <div class="scroll-progress" id="scrollProgress"></div>
@@ -1146,6 +1160,17 @@
     const hero = document.querySelector('.hero');
     const video = document.getElementById('heroVideo');
     if (!hero || !video) return;
+    // Su mobile lo scroll-scrubbing del video e' inaffidabile (il seek spesso non
+    // mostra i frame) e l'hero alto 280vh crea problemi di scroll. Riproduciamo il
+    // video come sfondo in loop, robusto e sempre visibile. Lo scrub resta su desktop.
+    const isMobile = matchMedia('(max-width: 640px)').matches || matchMedia('(pointer: coarse)').matches;
+    if (isMobile) {
+      video.loop = true;
+      const playMobile = () => { const p = video.play(); if (p && p.catch) p.catch(function(){}); };
+      playMobile();
+      document.addEventListener('visibilitychange', function(){ if (!document.hidden) playMobile(); });
+      return;
+    }
     const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     let duration = 0;
