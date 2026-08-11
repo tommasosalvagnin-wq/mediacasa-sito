@@ -560,11 +560,13 @@
   @media (max-width: 640px){
     section{padding:76px 0;}
     .wrap{padding:0 22px;}
-    /* Hero come IMMAGINE fissa su mobile: niente video (evita autoplay bloccato,
-       frame vuoti e sfarfallio). Altezza stabile (svh) per uno scroll regolare. */
-    .hero{height:100svh;}
-    .hero-sticky{position:relative; height:100svh;}
+    /* Hero su mobile: scrub tramite SEQUENZA DI IMMAGINI (non video, inaffidabile
+       su iOS). Altezze in svh (stabili con la barra URL) per non far impazzire lo
+       scroll. Il video vero resta nascosto; l'effetto scroll rimane. */
+    .hero{height:280vh; height:280svh;}
+    .hero-sticky{height:100svh;}
     .hero-bg{display:none;}
+    .hero-seq{position:absolute; inset:-8%; width:116%; height:116%; object-fit:cover; display:block;}
     .hero-content{padding:120px 22px 64px;}
     .hero-actions{flex-direction:column; align-items:stretch; gap:14px;}
     .hero-actions .btn-text{align-self:flex-start;}
@@ -1173,13 +1175,39 @@
     // l'autoplay e' bloccato (es. Risparmio energetico). Lo scrub resta solo su desktop.
     var isMobile = matchMedia('(max-width: 640px)').matches || matchMedia('(pointer: coarse)').matches;
     if (isMobile) {
-      // Su mobile il video da' solo problemi (autoplay bloccato in Risparmio energetico,
-      // frame vuoti su iOS, sfarfallio). Soluzione definitiva: hero come IMMAGINE fissa
-      // (il poster e' gia' sfondo di .hero-bg-wrap; il video e' nascosto via CSS).
-      // Qui liberiamo il download del video per non sprecare dati.
+      // Su mobile lo scrubbing di un vero video e' inaffidabile (iOS: autoplay bloccato,
+      // frame vuoti, sfarfallio). Usiamo una SEQUENZA DI IMMAGINI legata allo scroll:
+      // stesso effetto "video che scorre", ma robusto su ogni telefono.
       var mSrc = video.querySelector('source');
       if (mSrc) { mSrc.removeAttribute('src'); }
-      try { video.removeAttribute('src'); video.load(); } catch (e) {}
+      try { video.removeAttribute('src'); video.load(); } catch (e) {}  // niente download del video
+
+      var N = 60;
+      var pad = function(n){ n = String(n); return '000'.slice(n.length) + n; };
+      var urls = [];
+      for (var i = 1; i <= N; i++) urls.push('assets/hero-frames/f' + pad(i) + '.jpg');
+      // precarica tutti i frame (poi lo swap e' istantaneo dalla cache)
+      for (var j = 0; j < N; j++){ var im = new Image(); im.src = urls[j]; }
+
+      var seq = document.createElement('img');
+      seq.className = 'hero-seq';
+      seq.decoding = 'async';
+      seq.alt = '';
+      seq.src = urls[0];
+      (document.querySelector('.hero-bg-wrap') || hero).appendChild(seq);
+
+      var curIdx = -1;
+      var seqProgress = function(){
+        var r = hero.getBoundingClientRect();
+        var range = hero.offsetHeight - window.innerHeight;
+        return range > 0 ? Math.min(1, Math.max(0, -r.top / range)) : 0;
+      };
+      var seqTick = function(){
+        var idx = Math.round(seqProgress() * (N - 1));
+        if (idx !== curIdx){ curIdx = idx; seq.src = urls[idx]; }
+        requestAnimationFrame(seqTick);
+      };
+      requestAnimationFrame(seqTick);
       return;
     }
     const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
