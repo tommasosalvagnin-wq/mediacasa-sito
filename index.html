@@ -143,10 +143,10 @@
   /* HERO — video scrubbed by scroll, like the "astronaut" scroll-video technique */
   .hero{position:relative; height:280vh; padding:0;}
   .hero-sticky{position:sticky; top:0; height:100dvh; display:flex; align-items:flex-end; overflow:hidden;}
-  .hero-bg-wrap{position:absolute; inset:0; overflow:hidden;}
+  .hero-bg-wrap{position:absolute; inset:0; overflow:hidden; background:#140D08 url("assets/hero-poster.jpg") center/cover no-repeat;}
   .hero-bg{
     position:absolute; inset:-8%; width:116%; height:116%; object-fit:cover;
-    transform:scale(1.04);
+    transform:scale(1.04); background:transparent;
   }
   @media (prefers-reduced-motion:reduce){
     .hero-in{animation:none; opacity:1; transform:none;}
@@ -1157,6 +1157,16 @@
     const hero = document.querySelector('.hero');
     const video = document.getElementById('heroVideo');
     if (!hero || !video) return;
+    // iOS: un video solo "seekato" (scrub) non disegna i frame finche' non viene
+    // riprodotto almeno una volta. Lo innesca al primo tocco: play immediato + pause,
+    // cosi' i seek successivi mostrano i fotogrammi invece di restare vuoti.
+    var primed = false;
+    var prime = function(){ if (primed) return; primed = true;
+      var p = video.play();
+      if (p && p.then) p.then(function(){ setTimeout(function(){ try{ video.pause(); }catch(e){} }, 60); }).catch(function(){});
+    };
+    window.addEventListener('touchstart', prime, {once:true, passive:true});
+    window.addEventListener('pointerdown', prime, {once:true});
     const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     let duration = 0;
