@@ -1157,6 +1157,13 @@
     const hero = document.querySelector('.hero');
     const video = document.getElementById('heroVideo');
     if (!hero || !video) return;
+    // Su mobile usa una versione piu' leggera del video (720p, bitrate ridotto): il
+    // seek e' molto piu' veloce, quindi lo scrub dello scroll resta fluido.
+    var isMobile = matchMedia('(max-width: 640px)').matches || matchMedia('(pointer: coarse)').matches;
+    if (isMobile) {
+      var mSrc = video.querySelector('source');
+      if (mSrc) { mSrc.src = 'glass_hero_scroll_mobile.mp4'; video.load(); }
+    }
     // iOS: un video solo "seekato" (scrub) non disegna i frame finche' non viene
     // riprodotto almeno una volta. Lo innesca al primo tocco: play immediato + pause,
     // cosi' i seek successivi mostrano i fotogrammi invece di restare vuoti.
