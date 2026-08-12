@@ -30,7 +30,7 @@
   }
 
   *{box-sizing:border-box;}
-  html{scroll-behavior:smooth; scroll-padding-top:92px; overflow-x:hidden; overscroll-behavior-x:none;}
+  html{scroll-behavior:smooth; scroll-padding-top:92px; overflow-x:clip; overscroll-behavior-x:none;}
   body{
     margin:0;
     background:var(--ground);
@@ -38,11 +38,10 @@
     font-family:var(--sans);
     -webkit-font-smoothing:antialiased;
     text-rendering:optimizeLegibility;
-    overflow-x:hidden;
+    overflow-x:clip;
     overscroll-behavior-x:none;
     width:100%;
     max-width:100vw;
-    position:relative;
   }
   img{max-width:100%; display:block;}
   a{color:inherit;}
