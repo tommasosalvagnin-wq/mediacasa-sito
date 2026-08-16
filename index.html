@@ -652,9 +652,54 @@
     .listing:hover,
     .listing:hover .listing-media img{ transform:none; }
   }
+
+  /* PRELOADER — schermata di caricamento brandizzata */
+  #preloader{position:fixed; inset:0; z-index:2000; display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(120% 100% at 50% 32%, #241811 0%, #140D08 78%);
+    transition:opacity .6s ease, visibility .6s ease;}
+  #preloader.pl-hide{opacity:0; visibility:hidden;}
+  .pl-inner{display:flex; flex-direction:column; align-items:center; gap:30px; padding:0 24px;}
+  .pl-logo{font-family:var(--serif); font-weight:500; color:#F5EFE4; font-size:clamp(30px,7vw,40px);
+    letter-spacing:.01em; line-height:1; text-align:center;}
+  .pl-logo b{font-weight:500;}
+  .pl-logo .pl-sub{display:block; font-family:var(--sans); font-weight:600; font-size:11px;
+    letter-spacing:.44em; text-transform:uppercase; color:#D8B383; margin-top:12px; padding-left:.44em;}
+  .pl-bar{width:min(190px,60vw); height:2px; background:rgba(216,179,131,.20); border-radius:2px; overflow:hidden;}
+  .pl-bar i{display:block; height:100%; width:0%; border-radius:2px;
+    background:linear-gradient(90deg,#B98C4E,#D8B383,#F5EFE4); transition:width .35s ease;}
+  .pl-note{font-family:var(--sans); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:rgba(245,239,228,.5);}
+  @media (prefers-reduced-motion:reduce){ #preloader,.pl-bar i{transition:none;} }
 </style>
 
+<div id="preloader" role="status" aria-label="Caricamento">
+  <div class="pl-inner">
+    <div class="pl-logo"><b>Media</b>Casa<span class="pl-sub">Immobiliare</span></div>
+    <div class="pl-bar"><i id="plBarFill"></i></div>
+    <div class="pl-note">Caricamento</div>
+  </div>
+</div>
+
 <script>
+  // Preloader: mostra la schermata brandizzata finche' il media dell'hero non e' pronto.
+  (function(){
+    var pre = document.getElementById('preloader');
+    var fill = document.getElementById('plBarFill');
+    var done = false, shown = 0;
+    function setProgress(p){
+      p = Math.max(shown, Math.min(1, p)); shown = p;          // non torna mai indietro
+      if (fill) fill.style.width = (p * 100).toFixed(1) + '%';
+    }
+    function hide(){
+      if (done) return; done = true; setProgress(1);
+      pre.classList.add('pl-hide');
+      setTimeout(function(){ pre.style.display = 'none'; }, 700);
+    }
+    setProgress(0.08);
+    window.mcPreloader = { hide: hide, progress: setProgress };
+    setTimeout(hide, 9000);                                     // fallback: non bloccare mai troppo
+    window.addEventListener('load', function(){ setTimeout(hide, 1500); });
+  })();
+
   // Apre sempre in cima: evita che il browser (soprattutto mobile) ripristini
   // una posizione di scroll precedente e "salti" in fondo alla pagina.
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -1196,6 +1241,7 @@
 
       var imgs = new Array(N);
       var curIdx = -1;
+      var loadedCount = 0;
 
       function drawCover(img){
         if (!img || !canvas.width) return;
@@ -1223,7 +1269,16 @@
         (function(k){
           var im = new Image();
           im.decoding = 'async';
-          im.onload = function(){ imgs[k] = im; if (k === 0 && curIdx < 0) { curIdx = 0; drawCover(im); } else if (k === curIdx) { drawCover(im); } };
+          im.onload = function(){
+            imgs[k] = im;
+            if (k === 0 && curIdx < 0) { curIdx = 0; drawCover(im); } else if (k === curIdx) { drawCover(im); }
+            loadedCount++;
+            if (window.mcPreloader){
+              window.mcPreloader.progress(0.1 + 0.9 * (loadedCount / N));
+              if (loadedCount >= N) window.mcPreloader.hide();
+            }
+          };
+          im.onerror = function(){ loadedCount++; if (window.mcPreloader && loadedCount >= N) window.mcPreloader.hide(); };
           im.src = 'assets/hero-frames/f' + pad(k + 1) + '.jpg';
         })(i);
       }
@@ -1316,6 +1371,14 @@
 
     if (video.readyState >= 1) init();
     else video.addEventListener('loadedmetadata', init, {once:true});
+
+    // Nasconde il preloader quando il primo frame del video e' pronto (desktop).
+    var revealDesktop = function(){ if (window.mcPreloader) window.mcPreloader.hide(); };
+    if (video.readyState >= 2) revealDesktop();
+    else { video.addEventListener('loadeddata', revealDesktop, {once:true});
+           video.addEventListener('canplay', revealDesktop, {once:true}); }
+    // avanzamento indicativo mentre il video bufferizza
+    if (window.mcPreloader) window.mcPreloader.progress(0.55);
   })();
 
   // MAGNETIC PRIMARY BUTTONS
