@@ -133,7 +133,7 @@
   .nav-links a:hover, .nav-links a.active{color:var(--nav-ink);}
   .nav-links a:hover::after, .nav-links a.active::after{transform:scaleX(1);}
   .nav-cta{margin-left:auto;}
-  .nav-toggle{display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:8px; margin-left:auto;}
+  .nav-toggle{display:none; flex-direction:column; align-items:center; justify-content:center; gap:5px; width:44px; height:44px; background:none; border:none; cursor:pointer; padding:0; margin-left:auto;}
   .nav-toggle span{width:22px; height:2px; background:var(--nav-ink); border-radius:2px; transition:transform .2s var(--ease-snap), opacity .2s var(--ease-snap);}
   .mobile-panel{
     display:none; position:fixed; inset:0; z-index:190; background:var(--ground); padding:110px 32px 40px;
@@ -378,9 +378,11 @@
   }
   @media (max-width:980px){
     .tour-rail{
-      grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:120px; overflow-x:auto; padding-bottom:4px;
-      scrollbar-width:thin; scroll-snap-type:x proximity; scroll-behavior:smooth; scroll-padding-left:0;
+      grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:78%; gap:12px; overflow-x:auto; padding-bottom:4px;
+      scroll-snap-type:x mandatory; scroll-behavior:smooth; -webkit-overflow-scrolling:touch; scrollbar-width:none;
     }
+    .tour-rail::-webkit-scrollbar{ display:none; }
+    .tour-thumb{ scroll-snap-align:center; }
   }
 
   /* CALCOLATORE MUTUO */
@@ -579,6 +581,9 @@
     .contact-form{padding:28px;}
     .listings-head{gap:30px; margin-bottom:40px;}
     .listings-head .btn-primary{width:100%;}
+    /* zone tap piu' comode per telefono/email */
+    #contatti a[href^="tel:"], #contatti a[href^="mailto:"],
+    .footer a[href^="tel:"], .footer a[href^="mailto:"]{ display:inline-block; padding:7px 0; }
   }
 
   /* LISTINGS */
