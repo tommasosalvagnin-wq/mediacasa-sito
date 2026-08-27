@@ -156,6 +156,7 @@
   }
   .hero-content{position:relative; z-index:2; padding:180px 0 96px; max-width:1240px; margin:0 auto; width:100%; padding-left:32px; padding-right:32px;}
   .hero-content .eyebrow{color:#D8B383;}
+  .lede-short{display:none;}
   .hero-in{
     opacity:0; transform:translateY(22px); animation:heroIn .9s var(--ease-out) forwards; animation-delay:var(--d, 0s);
   }
@@ -571,6 +572,12 @@
     .hero-bg{display:none;}
     .hero-seq{position:absolute; inset:0; width:100%; height:100%; max-width:none; display:block;}
     .hero-content{padding:120px 22px 64px;}
+    /* meno testo e titolo piu' contenuto su telefono */
+    .hero h1{font-size:31px; line-height:1.08;}
+    .hero .lede{font-size:16px; margin-top:14px;}
+    .hide-mobile{display:none;}
+    .lede-full{display:none;}
+    .lede-short{display:inline;}
     .hero-actions{flex-direction:column; align-items:stretch; gap:14px;}
     .hero-actions .btn-text{align-self:flex-start;}
     .stats .wrap{grid-template-columns:1fr 1fr; padding:44px 22px;}
@@ -758,9 +765,9 @@
       </div>
       <div class="hero-overlay"></div>
       <div class="hero-content">
-        <span class="eyebrow hero-in" style="--d:0s">Compravendite e locazioni · Padova, centro storico</span>
+        <span class="eyebrow hero-in" style="--d:0s">Compravendite e locazioni · Padova<span class="hide-mobile">, centro storico</span></span>
         <h1 class="hero-in" style="--d:.12s">Soluzioni immobiliari su misura, <em>costruite sulla fiducia.</em></h1>
-        <p class="lede hero-in" style="--d:.26s">Noi di MediaCasa siamo specializzati nell'offrire soluzioni immobiliari su misura, con un servizio professionale, trasparente e altamente personalizzato.</p>
+        <p class="lede hero-in" style="--d:.26s"><span class="lede-full">Noi di MediaCasa siamo specializzati nell'offrire soluzioni immobiliari su misura, con un servizio professionale, trasparente e altamente personalizzato.</span><span class="lede-short">Servizio immobiliare professionale e su misura, nel cuore di Padova.</span></p>
         <div class="hero-actions hero-in" style="--d:.38s">
           <div class="cta-btn-wrapper">
             <a class="cta-btn" href="#contatti">
