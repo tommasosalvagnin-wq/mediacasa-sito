@@ -142,6 +142,9 @@
   }
   .mobile-panel.open{opacity:1; transform:translateY(0); pointer-events:auto;}
   .mobile-panel a{font-family:var(--serif); font-size:28px; text-decoration:none; color:var(--paper); border-bottom:1px solid var(--line); padding-bottom:18px;}
+  .mobile-panel a.mobile-cta{margin-top:14px; border-bottom:none; padding:16px 22px; border-radius:999px;
+    background:var(--bordeaux); color:var(--on-accent); font-family:var(--sans); font-size:16px; font-weight:600;
+    text-align:center; letter-spacing:.01em;}
 
   /* HERO — video scrubbed by scroll, like the "astronaut" scroll-video technique */
   .hero{position:relative; height:280vh; padding:0;}
@@ -579,7 +582,6 @@
     .hero .lede{display:none;}
     .hero-actions{margin-top:24px;}
     .hero .btn-text{display:none;}
-    .nav-cta{display:none !important;}   /* niente pulsante "Stima gratuita" su telefono */
     .hide-mobile{display:none;}
     .hero-actions{flex-direction:column; align-items:stretch; gap:14px;}
     .hero-actions .btn-text{align-self:flex-start;}
@@ -755,6 +757,7 @@
   <a href="#team">Team</a>
   <a href="#annunci">Annunci</a>
   <a href="#contatti">Contatti</a>
+  <a href="stima.html" class="mobile-cta">Stima gratuita</a>
 </div>
 
 <main id="top">
