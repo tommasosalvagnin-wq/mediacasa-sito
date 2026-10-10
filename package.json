@@ -1,0 +1,8 @@
+{
+  "name": "mediacasa-sito",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "nodemailer": "10.0.10"
+  }
+}

@@ -49,7 +49,10 @@
   .btn:active{transform:scale(.97);}
   .btn-primary{background:var(--bordeaux); color:var(--on-accent); box-shadow:0 10px 26px -10px rgba(36,24,17,.5); margin-top:6px;}
   .btn-primary:hover{background:var(--bordeaux-deep); transform:translateY(-2px);}
-  .form-note{font-size:13px; color:var(--paper-mute); text-align:center; margin-top:4px;}
+  .btn[disabled]{opacity:.6; cursor:wait; transform:none;}
+  .form-error{font-size:14px; color:#9B2C2C; text-align:center; margin-top:4px;}
+  .form-error a{font-weight:600;}
+  .hp{position:absolute; left:-10000px; width:1px; height:1px; overflow:hidden;}
 
   .ok{display:none; text-align:center; padding:24px; background:var(--bordeaux-tint); border-radius:var(--radius-m); color:var(--bordeaux); font-weight:600;}
 
@@ -71,7 +74,7 @@
       <p>Compila il modulo con i dati del tuo immobile a Padova e dintorni. Riceverai una valutazione gratuita e senza impegno da parte dei nostri consulenti.</p>
     </section>
 
-    <form class="stima-form" id="stimaForm" onsubmit="return false;">
+    <form class="stima-form" id="stimaForm">
       <div class="row">
         <label>Nome e cognome<input type="text" name="nome" placeholder="Mario Rossi" required></label>
         <label>Telefono<input type="tel" name="telefono" placeholder="333 123 4567" required></label>
@@ -93,18 +96,41 @@
       </div>
       <label>Indirizzo / Zona<input type="text" name="indirizzo" placeholder="Via del Vescovado, Padova" required></label>
       <label>Note aggiuntive<textarea name="note" rows="4" placeholder="Piano, stato dell'immobile, tempistiche di vendita..."></textarea></label>
+      <div class="hp" aria-hidden="true"><label>Sito web<input type="text" name="sito_web" tabindex="-1" autocomplete="off"></label></div>
       <button class="btn btn-primary" type="submit">Richiedi la stima gratuita</button>
-      <p class="form-note">Modulo dimostrativo — in produzione verrà collegato a email o CRM dell'agenzia.</p>
+      <p class="form-error" id="errMsg" role="alert" hidden>Invio non riuscito. Riprova tra poco, oppure scrivici a <a href="mailto:info@mediacasaimmobiliare.com">info@mediacasaimmobiliare.com</a> o chiama il <a href="tel:+390495739395">049 573 93 95</a>.</p>
     </form>
 
     <div class="ok" id="okMsg">Grazie! La tua richiesta è stata inviata. Ti ricontatteremo al più presto.</div>
   </main>
 
   <script>
-    document.getElementById('stimaForm').addEventListener('submit', function(){
-      this.style.display='none';
-      document.getElementById('okMsg').style.display='block';
-      window.scrollTo({top:0, behavior:'smooth'});
+    document.getElementById('stimaForm').addEventListener('submit', async function(e){
+      e.preventDefault();
+      const form = this;
+      const btn = form.querySelector('button[type="submit"]');
+      const err = document.getElementById('errMsg');
+      if (btn.disabled) return;
+      btn.disabled = true;
+      btn.textContent = 'Invio in corso…';
+      err.hidden = true;
+      try {
+        const dati = Object.fromEntries(new FormData(form));
+        dati.modulo = 'stima';
+        const risposta = await fetch('/api/invia', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(dati)
+        });
+        if (!risposta.ok) throw new Error('HTTP ' + risposta.status);
+        form.style.display = 'none';
+        document.getElementById('okMsg').style.display = 'block';
+        window.scrollTo({top:0, behavior:'smooth'});
+      } catch (_) {
+        err.hidden = false;
+        btn.disabled = false;
+        btn.textContent = 'Richiedi la stima gratuita';
+      }
     });
   </script>
 </body>
